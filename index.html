@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Git & GitHub Complete Tutorial | Learn Version Control</title>
+<meta name="description" content="Complete Git & GitHub tutorial with commands, quiz, interview questions, hosting static sites, and more."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0d1117; --bg2:#161b22; --card:#1c2128; --border:#30363d;
+  --text:#e6edf3; --muted:#8b949e; --primary:#f97316; --primary2:#ea580c;
+  --accent:#58a6ff; --green:#2ea043; --red:#f85149; --yellow:#d29922;
+  --grad: linear-gradient(135deg,#f97316 0%,#ea580c 50%,#dc2626 100%);
+  --grad2: linear-gradient(135deg,#58a6ff 0%,#a371f7 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
+  line-height:1.7;overflow-x:hidden;position:relative;
+}
+code,pre{font-family:'JetBrains Mono',monospace}
+
+/* Animated background */
+.bg-animation{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(ellipse at top,#1a1f2e 0%,#0d1117 60%)}
+.bg-animation::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%,rgba(249,115,22,.15),transparent 40%),
+    radial-gradient(circle at 80% 70%,rgba(88,166,255,.12),transparent 40%),
+    radial-gradient(circle at 50% 50%,rgba(163,113,247,.08),transparent 50%);
+  animation:bgShift 15s ease-in-out infinite alternate;
+}
+@keyframes bgShift{0%{transform:scale(1) rotate(0)}100%{transform:scale(1.2) rotate(5deg)}}
+
+.floating-icon{
+  position:absolute;color:rgba(255,255,255,0.04);font-size:80px;
+  animation:floatY 20s linear infinite;
+}
+@keyframes floatY{
+  0%{transform:translateY(100vh) rotate(0)}
+  100%{transform:translateY(-200px) rotate(360deg)}
+}
+
+/* Header */
+header{
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
+  background:rgba(13,17,23,.85);border-bottom:1px solid var(--border);
+}
+nav{
+  max-width:1280px;margin:0 auto;padding:16px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
+.logo i{font-size:28px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:500;transition:.3s;font-size:14px}
+.nav-links a:hover{color:var(--primary)}
+.menu-btn{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
+
+/* Hero */
+.hero{
+  min-height:90vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:60px 24px;position:relative;
+}
+.hero-content{max-width:900px;animation:fadeUp 1s ease}
+.hero .badge{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 18px;
+  border:1px solid var(--border);border-radius:50px;
+  background:rgba(249,115,22,.1);color:var(--primary);font-size:13px;font-weight:600;margin-bottom:24px;
+}
+.hero h1{
+  font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:24px;
+}
+.hero h1 .grad{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:700px;margin:0 auto 36px}
+.hero-icons{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
+.hero-icons .iwrap{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:bounce 3s ease-in-out infinite;
+}
+.hero-icons .iwrap:nth-child(2){animation-delay:.5s}
+.hero-icons .iwrap i{font-size:64px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 8px 16px rgba(249,115,22,.3))}
+.hero-icons .iwrap:nth-child(2) i{background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-icons span{font-weight:600;font-size:14px}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 28px;
+  border-radius:10px;font-weight:600;text-decoration:none;cursor:pointer;border:none;
+  transition:.3s;font-size:15px;font-family:inherit;
+}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(249,115,22,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(249,115,22,.55)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* Sections */
+section{padding:80px 24px;position:relative}
+.container{max-width:1200px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:60px}
+.sec-head .label{color:var(--primary);font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase}
+.sec-head h2{font-size:clamp(1.8rem,4vw,2.8rem);margin:12px 0;font-weight:800}
+.sec-head p{color:var(--muted);max-width:650px;margin:0 auto}
+
+/* Chapter grid */
+.chapters{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.chapter-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;
+  transition:.3s;cursor:pointer;position:relative;overflow:hidden;
+}
+.chapter-card::before{
+  content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--grad);
+  transform:scaleY(0);transition:.3s;transform-origin:top;
+}
+.chapter-card:hover{transform:translateY(-6px);border-color:var(--primary)}
+.chapter-card:hover::before{transform:scaleY(1)}
+.chapter-num{
+  width:44px;height:44px;border-radius:10px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:16px;
+}
+.chapter-card h3{font-size:1.15rem;margin-bottom:8px}
+.chapter-card p{color:var(--muted);font-size:14px}
+
+/* Content articles */
+.article{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:36px;margin-bottom:28px;scroll-margin-top:100px;
+}
+.article h3{
+  font-size:1.6rem;margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.article h3 i{color:var(--primary)}
+.article h4{font-size:1.15rem;margin:24px 0 12px;color:var(--accent)}
+.article p{color:#c9d1d9;margin-bottom:14px}
+.article ul,.article ol{padding-left:24px;color:#c9d1d9;margin-bottom:14px}
+.article li{margin-bottom:6px}
+.article strong{color:var(--text)}
+
+pre{
+  background:#0a0e14;border:1px solid var(--border);border-radius:10px;
+  padding:18px;overflow-x:auto;margin:14px 0;position:relative;
+}
+pre code{color:#a5d6ff;font-size:14px;line-height:1.6}
+.cmd-line{display:block}
+.cmd-comment{color:#8b949e}
+.cmd-prompt{color:var(--green)}
+.cmd-keyword{color:var(--primary)}
+
+.callout{
+  border-left:4px solid var(--accent);background:rgba(88,166,255,.08);
+  padding:14px 18px;border-radius:8px;margin:16px 0;
+}
+.callout.warn{border-color:var(--yellow);background:rgba(210,153,34,.08)}
+.callout.tip{border-color:var(--green);background:rgba(46,160,67,.08)}
+
+/* Venn */
+.venn-wrap{display:flex;justify-content:center;margin:30px 0}
+.venn{position:relative;width:340px;height:220px;max-width:100%}
+.venn .circle{
+  position:absolute;width:200px;height:200px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-weight:700;text-align:center;
+  mix-blend-mode:screen;color:#fff;
+}
+.venn .c1{background:rgba(249,115,22,.7);left:0;top:10px}
+.venn .c2{background:rgba(88,166,255,.7);right:0;top:10px}
+.venn-label{text-align:center;margin-top:14px;color:var(--muted);font-size:14px}
+
+/* Command table */
+.cmd-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.cmd-table th,.cmd-table td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
+.cmd-table th{background:rgba(249,115,22,.08);color:var(--primary)}
+.cmd-table code{background:#0a0e14;padding:3px 8px;border-radius:4px;color:#a5d6ff;font-size:13px}
+
+/* Workflow */
+.workflow{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:24px 0}
+.flow-step{
+  background:rgba(249,115,22,.08);border:1px dashed var(--primary);border-radius:10px;
+  padding:18px;text-align:center;position:relative;
+}
+.flow-step .n{
+  width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 10px;font-weight:700;font-size:14px;
+}
+.flow-step h5{margin-bottom:4px}
+.flow-step p{font-size:12px;color:var(--muted)}
+
+/* Trainer */
+.trainer-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:40px;display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:center;
+}
+.trainer-avatar{
+  width:200px;height:200px;border-radius:50%;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;font-size:90px;color:#fff;
+  box-shadow:0 20px 60px rgba(249,115,22,.4);position:relative;
+}
+.trainer-avatar::after{
+  content:"";position:absolute;inset:-8px;border-radius:50%;border:2px dashed var(--primary);
+  animation:spin 20s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.trainer-info h3{font-size:1.8rem;margin-bottom:6px}
+.trainer-info .role{color:var(--primary);font-weight:600;margin-bottom:14px}
+.trainer-info p{color:var(--muted);margin-bottom:16px}
+.trainer-stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:16px}
+.stat{text-align:center}
+.stat .num{font-size:1.6rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+/* Quiz */
+.quiz-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.quiz-progress{flex:1;min-width:200px;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:var(--grad);width:0%;transition:.4s}
+.quiz-score{font-weight:700;color:var(--primary)}
+
+.quiz-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;min-height:300px;
+}
+.q-num{color:var(--primary);font-size:13px;font-weight:600;margin-bottom:10px}
+.q-text{font-size:1.2rem;font-weight:600;margin-bottom:20px}
+.q-options{display:grid;gap:10px}
+.q-opt{
+  padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  cursor:pointer;transition:.2s;font-size:15px;color:var(--text);text-align:left;font-family:inherit;
+}
+.q-opt:hover{border-color:var(--primary);transform:translateX(4px)}
+.q-opt.correct{background:rgba(46,160,67,.15);border-color:var(--green);color:#7ee787}
+.q-opt.wrong{background:rgba(248,81,73,.15);border-color:var(--red);color:#ffa198}
+.q-opt:disabled{cursor:not-allowed}
+.q-explain{
+  margin-top:16px;padding:14px;background:rgba(88,166,255,.08);border-left:3px solid var(--accent);
+  border-radius:6px;font-size:14px;display:none;
+}
+.q-explain.show{display:block;animation:fadeUp .4s}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:20px;gap:12px}
+
+/* Interview */
+.iq-list{display:grid;gap:12px}
+.iq-item{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;
+}
+.iq-q{
+  padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  font-weight:600;transition:.2s;
+}
+.iq-q:hover{background:rgba(249,115,22,.05)}
+.iq-q .qn{color:var(--primary);font-size:13px;margin-right:8px}
+.iq-q i{transition:.3s;color:var(--muted)}
+.iq-item.open .iq-q i{transform:rotate(180deg);color:var(--primary)}
+.iq-a{max-height:0;overflow:hidden;transition:.4s;padding:0 20px}
+.iq-item.open .iq-a{max-height:600px;padding:0 20px 18px;border-top:1px solid var(--border)}
+.iq-a p{color:#c9d1d9;padding-top:14px;font-size:14px}
+.iq-search{
+  width:100%;padding:14px 18px;background:var(--card);border:1px solid var(--border);
+  border-radius:10px;color:var(--text);font-size:15px;margin-bottom:20px;font-family:inherit;
+}
+.iq-search:focus{outline:none;border-color:var(--primary)}
+
+/* Contact form */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.contact-info{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;
+}
+.info-item{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start}
+.info-item i{
+  width:42px;height:42px;border-radius:10px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0;
+}
+.info-item h5{margin-bottom:2px}
+.info-item p,.info-item a{color:var(--muted);text-decoration:none;font-size:14px}
+.info-item a:hover{color:var(--primary)}
+
+form.query{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;
+  display:flex;flex-direction:column;gap:14px;
+}
+form.query label{font-size:13px;font-weight:600;color:var(--muted)}
+form.query input,form.query textarea{
+  padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:inherit;font-size:14px;
+}
+form.query input:focus,form.query textarea:focus{outline:none;border-color:var(--primary)}
+form.query textarea{min-height:110px;resize:vertical}
+.whatsapp-btn{
+  background:#25d366;color:#fff;display:inline-flex;align-items:center;gap:10px;
+  padding:14px 24px;border-radius:10px;text-decoration:none;font-weight:600;justify-content:center;
+  transition:.3s;border:none;cursor:pointer;font-family:inherit;font-size:15px;
+}
+.whatsapp-btn:hover{background:#1ebe57;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.4)}
+
+/* Float whatsapp */
+.float-wa{
+  position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;
+  background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:28px;text-decoration:none;box-shadow:0 8px 24px rgba(37,211,102,.5);z-index:99;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(37,211,102,.5)}50%{box-shadow:0 8px 30px rgba(37,211,102,.8)}}
+
+/* Footer */
+footer{
+  background:#0a0e14;border-top:1px solid var(--border);padding:50px 24px 24px;margin-top:60px;
+}
+.foot-grid{
+  max-width:1200px;margin:0 auto;display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
+}
+.foot-col h5{margin-bottom:14px;font-size:15px}
+.foot-col ul{list-style:none}
+.foot-col li{margin-bottom:8px}
+.foot-col a{color:var(--muted);text-decoration:none;font-size:14px;transition:.2s}
+.foot-col a:hover{color:var(--primary)}
+.foot-col p{color:var(--muted);font-size:14px}
+.social{display:flex;gap:12px;margin-top:14px}
+.social a{
+  width:38px;height:38px;border-radius:8px;background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.social a:hover{background:var(--grad);border-color:transparent;color:#fff!important}
+.foot-bottom{
+  max-width:1200px;margin:30px auto 0;padding-top:20px;border-top:1px solid var(--border);
+  text-align:center;color:var(--muted);font-size:13px;
+}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:.8s}
+.reveal.show{opacity:1;transform:translateY(0)}
+
+/* Responsive */
+@media (max-width:840px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg2);
+    flex-direction:column;padding:20px;border-bottom:1px solid var(--border)}
+  .nav-links.open{display:flex}
+  .menu-btn{display:block}
+  .trainer-card{grid-template-columns:1fr;text-align:center}
+  .trainer-avatar{margin:0 auto}
+  .trainer-stats{justify-content:center}
+  .contact-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px}
+  section{padding:60px 18px}
+  .article{padding:24px 20px}
+}
+@media (max-width:480px){
+  .foot-grid{grid-template-columns:1fr}
+  .hero-icons{gap:24px}
+  .hero-icons .iwrap i{font-size:48px}
+  .venn{width:280px;height:200px}
+  .venn .circle{width:170px;height:170px;font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- Animated BG -->
+<div class="bg-animation" aria-hidden="true">
+  <i class="fab fa-git-alt floating-icon" style="left:5%;animation-delay:0s"></i>
+  <i class="fab fa-github floating-icon" style="left:20%;animation-delay:4s;font-size:100px"></i>
+  <i class="fas fa-code-branch floating-icon" style="left:40%;animation-delay:8s"></i>
+  <i class="fab fa-git floating-icon" style="left:60%;animation-delay:12s;font-size:120px"></i>
+  <i class="fab fa-github-alt floating-icon" style="left:78%;animation-delay:2s"></i>
+  <i class="fas fa-code-merge floating-icon" style="left:90%;animation-delay:6s"></i>
+  <i class="fas fa-terminal floating-icon" style="left:15%;animation-delay:10s"></i>
+  <i class="fab fa-github floating-icon" style="left:55%;animation-delay:14s"></i>
+</div>
+
+<!-- Header -->
+<header>
+  <nav>
+    <div class="logo">
+      <i class="fab fa-git-alt"></i>
+      <span>Git<span style="color:var(--accent)">Mastery</span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#chapters">Chapters</a></li>
+      <li><a href="#content">Tutorial</a></li>
+      <li><a href="#trainer">Trainer</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+      <li><a href="#interview">Interview</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="badge"><i class="fas fa-bolt"></i> Complete Beginner to Advanced Guide</span>
+    <h1>Master <span class="grad">Git & GitHub</span><br/>The Developer's Superpower - Ram sir </h1>
+    <p>Learn version control from scratch — commands, workflows, hosting static sites, collaboration, plus 50+ quiz questions and 50+ interview questions to land your dream job.</p>
+    <div class="btn-group">
+      <a href="#content" class="btn btn-primary"><i class="fas fa-play"></i> Start Learning</a>
+      <a href="#quiz" class="btn btn-outline"><i class="fas fa-question-circle"></i> Take the Quiz</a>
+    </div>
+    <div class="hero-icons">
+      <div class="iwrap"><i class="fab fa-git-alt"></i><span>Git</span></div>
+      <div class="iwrap"><i class="fab fa-github"></i><span>GitHub</span></div>
+      <div class="iwrap"><i class="fas fa-code-branch" style="background:linear-gradient(135deg,#2ea043,#3fb950);-webkit-background-clip:text;-webkit-text-fill-color:transparent"></i><span>Branches</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Chapters -->
+<section id="chapters">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="label">Course Roadmap</span>
+      <h2>What You'll Learn</h2>
+      <p>12 in-depth chapters covering everything from "what is version control" to advanced GitHub workflows.</p>
+    </div>
+    <div class="chapters">
+      <div class="chapter-card reveal" onclick="scrollTo2('#c1')"><div class="chapter-num">01</div><h3>Version Control Basics</h3><p>What it is, why it matters, types of VCS.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c2')"><div class="chapter-num">02</div><h3>What is Git?</h3><p>The distributed VCS used by millions.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c3')"><div class="chapter-num">03</div><h3>What is GitHub?</h3><p>The world's largest code hosting platform.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c4')"><div class="chapter-num">04</div><h3>Git vs GitHub</h3><p>Clear comparison with a Venn diagram.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c5')"><div class="chapter-num">05</div><h3>Why So Popular?</h3><p>Reasons behind global adoption.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c6')"><div class="chapter-num">06</div><h3>Other VCS Tools</h3><p>SVN, Mercurial, Perforce compared.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c7')"><div class="chapter-num">07</div><h3>Install & Configure Git</h3><p>Setup on Windows, macOS, Linux.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c8')"><div class="chapter-num">08</div><h3>Essential Git Commands</h3><p>init, add, commit, push, pull, clone…</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c9')"><div class="chapter-num">09</div><h3>Upload Folder to GitHub</h3><p>Step-by-step push entire project.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c10')"><div class="chapter-num">10</div><h3>Host Static Site (Pages)</h3><p>Get a free public URL for your HTML.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c11')"><div class="chapter-num">11</div><h3>README.md & Markdown</h3><p>Write a stunning project README.</p></div>
+      <div class="chapter-card reveal" onclick="scrollTo2('#c12')"><div class="chapter-num">12</div><h3>Branches, Merge & PRs</h3><p>Team collaboration the right way.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section id="content">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="label">Complete Tutorial</span>
+      <h2>Git & GitHub In Depth</h2>
+      <p>Read top-to-bottom or jump to any chapter. Every command, every concept, explained simply.</p>
+    </div>
+
+    <article class="article reveal" id="c1">
+      <h3><i class="fas fa-code-branch"></i> 1. What is Version Control?</h3>
+      <p><strong>Version Control System (VCS)</strong> is a system that records changes to files over time so you can recall a specific version later. Think of it like an unlimited "undo" button for your entire project — every save is a snapshot you can return to.</p>
+      <h4>Why do we need it?</h4>
+      <ul>
+        <li><strong>History:</strong> See every change ever made and who made it.</li>
+        <li><strong>Collaboration:</strong> Multiple developers can work on the same project without overwriting each other.</li>
+        <li><strong>Backup:</strong> Code is safely stored in multiple places.</li>
+        <li><strong>Experiment safely:</strong> Try new features in branches without breaking main code.</li>
+        <li><strong>Revert mistakes:</strong> Roll back to any previous working state in seconds.</li>
+      </ul>
+      <h4>Types of Version Control</h4>
+      <ol>
+        <li><strong>Local VCS</strong> — keeps versions on your own machine only (e.g., RCS).</li>
+        <li><strong>Centralized VCS (CVCS)</strong> — single central server holds all versions (e.g., SVN, Perforce).</li>
+        <li><strong>Distributed VCS (DVCS)</strong> — every developer has a full copy of the repo (e.g., <strong>Git</strong>, Mercurial). This is the modern standard.</li>
+      </ol>
+      <div class="callout tip"><strong><i class="fas fa-lightbulb"></i> Real-life analogy:</strong> Version control is like Google Docs' "version history" but designed for code, with much more power.</div>
+    </article>
+
+    <article class="article reveal" id="c2">
+      <h3><i class="fab fa-git-alt"></i> 2. What is Git?</h3>
+      <p><strong>Git</strong> is a free, open-source <em>distributed version control system</em> created by <strong>Linus Torvalds</strong> in 2005 to manage Linux kernel development. It tracks changes in your code and lets teams collaborate seamlessly.</p>
+      <h4>Key features of Git</h4>
+      <ul>
+        <li>⚡ <strong>Fast</strong> — most operations are local.</li>
+        <li>🌐 <strong>Distributed</strong> — every clone is a full backup.</li>
+        <li>🌿 <strong>Strong branching</strong> — cheap, fast, easy to merge.</li>
+        <li>🔒 <strong>Data integrity</strong> — every change is SHA-1 hashed.</li>
+        <li>💻 <strong>Works offline</strong> — commit without internet.</li>
+      </ul>
+      <h4>Git is a tool — you install it on your computer</h4>
+      <pre><code><span class="cmd-prompt">$</span> git --version
+git version 2.43.0</code></pre>
+    </article>
+
+    <article class="article reveal" id="c3">
+      <h3><i class="fab fa-github"></i> 3. What is GitHub?</h3>
+      <p><strong>GitHub</strong> is a <em>cloud-based hosting service</em> for Git repositories. It adds a beautiful web UI, collaboration tools, issue tracking, pull requests, CI/CD (GitHub Actions), free static hosting (GitHub Pages), and much more on top of Git.</p>
+      <p>Founded in 2008, acquired by Microsoft in 2018, GitHub now hosts over <strong>100 million developers</strong> and <strong>420+ million repositories</strong>.</p>
+      <h4>What can you do on GitHub?</h4>
+      <ul>
+        <li>📁 <strong>Store</strong> your project code online safely.</li>
+        <li>🗂 <strong>Manage versions</strong> of your projects with full history.</li>
+        <li>🤝 <strong>Collaborate</strong> with developers worldwide.</li>
+        <li>🌍 <strong>Host static sites</strong> (HTML/CSS/JS) for free with GitHub Pages.</li>
+        <li>🐛 <strong>Track issues</strong> and manage projects with Kanban boards.</li>
+        <li>⚙️ <strong>Automate</strong> tests and deployments with GitHub Actions.</li>
+        <li>👁 <strong>Showcase</strong> your portfolio to recruiters.</li>
+      </ul>
+    </article>
+
+    <article class="article reveal" id="c4">
+      <h3><i class="fas fa-equals"></i> 4. Git vs GitHub — Clear Difference</h3>
+      <p>People confuse them all the time. Here's the simplest distinction:</p>
+      <div class="venn-wrap">
+        <div class="venn">
+          <div class="circle c1">GIT<br/><small>Tool on your PC</small></div>
+          <div class="circle c2">GITHUB<br/><small>Cloud platform</small></div>
+        </div>
+      </div>
+      <p class="venn-label">↑ Git is the engine, GitHub is the garage that stores and shares your cars.</p>
+      <table class="cmd-table">
+        <tr><th>Git</th><th>GitHub</th></tr>
+        <tr><td>A software/tool</td><td>A web service</td></tr>
+        <tr><td>Installed locally</td><td>Accessed via browser</td></tr>
+        <tr><td>Works offline</td><td>Requires internet</td></tr>
+        <tr><td>Created by Linus Torvalds</td><td>Owned by Microsoft</td></tr>
+        <tr><td>Manages versions</td><td>Hosts Git repositories</td></tr>
+      </table>
+    </article>
+
+    <article class="article reveal" id="c5">
+      <h3><i class="fas fa-fire"></i> 5. Why Are Git & GitHub So Popular?</h3>
+      <ul>
+        <li><strong>Industry standard</strong> — 90%+ of companies use it.</li>
+        <li><strong>Free & open source</strong> — zero cost to start.</li>
+        <li><strong>Huge community</strong> — endless tutorials, answers, packages.</li>
+        <li><strong>Open source culture</strong> — contribute to projects like React, Linux, VS Code.</li>
+        <li><strong>Portfolio builder</strong> — your GitHub profile = your resume.</li>
+        <li><strong>Integrations</strong> — VS Code, Jira, Slack, AWS, everything.</li>
+      </ul>
+    </article>
+
+    <article class="article reveal" id="c6">
+      <h3><i class="fas fa-layer-group"></i> 6. Other Version Control Systems</h3>
+      <table class="cmd-table">
+        <tr><th>Tool</th><th>Type</th><th>Notes</th></tr>
+        <tr><td>SVN (Subversion)</td><td>Centralized</td><td>Older, still used in enterprises.</td></tr>
+        <tr><td>Mercurial (Hg)</td><td>Distributed</td><td>Similar to Git, simpler syntax.</td></tr>
+        <tr><td>Perforce (Helix)</td><td>Centralized</td><td>Popular in game industry, big files.</td></tr>
+        <tr><td>CVS</td><td>Centralized</td><td>Legacy — predecessor of SVN.</td></tr>
+        <tr><td>Bazaar</td><td>Distributed</td><td>Backed by Canonical (Ubuntu).</td></tr>
+      </table>
+      <p>Alternatives to GitHub: <strong>GitLab</strong>, <strong>Bitbucket</strong>, <strong>Azure DevOps</strong>, <strong>Codeberg</strong>.</p>
+    </article>
+
+    <article class="article reveal" id="c7">
+      <h3><i class="fas fa-download"></i> 7. Installing & Configuring Git</h3>
+      <h4>Install</h4>
+      <ul>
+        <li><strong>Windows:</strong> Download from <code>git-scm.com</code> and install Git Bash.</li>
+        <li><strong>macOS:</strong> <code>brew install git</code></li>
+        <li><strong>Linux:</strong> <code>sudo apt install git</code></li>
+      </ul>
+      <h4>First-time configuration</h4>
+<pre><code><span class="cmd-prompt">$</span> git config --global user.name <span style="color:#a5d6ff">"Your Name"</span>
+<span class="cmd-prompt">$</span> git config --global user.email <span style="color:#a5d6ff">"you@email.com"</span>
+<span class="cmd-prompt">$</span> git config --global init.defaultBranch main
+<span class="cmd-prompt">$</span> git config --list   <span class="cmd-comment"># verify</span></code></pre>
+    </article>
+
+    <article class="article reveal" id="c8">
+      <h3><i class="fas fa-terminal"></i> 8. Essential Git Commands (with examples)</h3>
+      <p>Open a terminal inside any project folder and run these:</p>
+
+      <h4>🔹 git init — start a new repository</h4>
+<pre><code><span class="cmd-prompt">$</span> git init
+Initialized empty Git repository in /your/project/.git/</code></pre>
+      <p>Creates a hidden <code>.git</code> folder that tracks everything.</p>
+
+      <h4>🔹 git status — see what's changed</h4>
+<pre><code><span class="cmd-prompt">$</span> git status
+On branch main
+Untracked files:
+  index.html
+  style.css</code></pre>
+
+      <h4>🔹 git add — stage files for commit</h4>
+<pre><code><span class="cmd-prompt">$</span> git add index.html         <span class="cmd-comment"># add one file</span>
+<span class="cmd-prompt">$</span> git add .                  <span class="cmd-comment"># add ALL changed files</span>
+<span class="cmd-prompt">$</span> git add *.js               <span class="cmd-comment"># add by pattern</span></code></pre>
+
+      <h4>🔹 git commit — save a snapshot</h4>
+<pre><code><span class="cmd-prompt">$</span> git commit -m <span style="color:#a5d6ff">"Initial commit: add homepage"</span>
+<span class="cmd-prompt">$</span> git commit -am <span style="color:#a5d6ff">"Quick: stage tracked + commit"</span></code></pre>
+      <div class="callout tip"><strong>Tip:</strong> Write commit messages in imperative mood — "Add login", not "Added login".</div>
+
+      <h4>🔹 Connect to a GitHub repo</h4>
+      <p>1. Create a new empty repo on github.com → copy the URL.</p>
+      <p>2. Link your local folder:</p>
+<pre><code><span class="cmd-prompt">$</span> git remote add origin https://github.com/username/repo.git
+<span class="cmd-prompt">$</span> git remote -v          <span class="cmd-comment"># verify remote</span></code></pre>
+
+      <h4>🔹 git push — upload commits to GitHub</h4>
+<pre><code><span class="cmd-prompt">$</span> git branch -M main
+<span class="cmd-prompt">$</span> git push -u origin main   <span class="cmd-comment"># first push (sets upstream)</span>
+<span class="cmd-prompt">$</span> git push                  <span class="cmd-comment"># next pushes</span></code></pre>
+
+      <h4>🔹 git clone — copy a remote repo to your PC</h4>
+<pre><code><span class="cmd-prompt">$</span> git clone https://github.com/username/repo.git
+<span class="cmd-prompt">$</span> cd repo</code></pre>
+
+      <h4>🔹 git pull — fetch + merge latest changes</h4>
+<pre><code><span class="cmd-prompt">$</span> git pull origin main</code></pre>
+
+      <h4>🔹 git log — view commit history</h4>
+<pre><code><span class="cmd-prompt">$</span> git log
+<span class="cmd-prompt">$</span> git log --oneline --graph --all</code></pre>
+
+      <h4>🔹 More useful commands</h4>
+      <table class="cmd-table">
+        <tr><th>Command</th><th>What it does</th></tr>
+        <tr><td><code>git diff</code></td><td>Show unstaged changes</td></tr>
+        <tr><td><code>git restore file</code></td><td>Discard local changes</td></tr>
+        <tr><td><code>git reset HEAD file</code></td><td>Unstage a file</td></tr>
+        <tr><td><code>git rm file</code></td><td>Delete file & stage removal</td></tr>
+        <tr><td><code>git mv old new</code></td><td>Rename a tracked file</td></tr>
+        <tr><td><code>git branch</code></td><td>List branches</td></tr>
+        <tr><td><code>git branch feature</code></td><td>Create new branch</td></tr>
+        <tr><td><code>git checkout feature</code></td><td>Switch branch</td></tr>
+        <tr><td><code>git switch -c feature</code></td><td>Create + switch (modern)</td></tr>
+        <tr><td><code>git merge feature</code></td><td>Merge branch into current</td></tr>
+        <tr><td><code>git stash</code></td><td>Temporarily save changes</td></tr>
+        <tr><td><code>git stash pop</code></td><td>Restore stashed changes</td></tr>
+        <tr><td><code>git revert &lt;hash&gt;</code></td><td>Undo a commit (safe)</td></tr>
+        <tr><td><code>git reset --hard &lt;hash&gt;</code></td><td>Force reset (dangerous)</td></tr>
+        <tr><td><code>git tag v1.0</code></td><td>Tag a release</td></tr>
+        <tr><td><code>git fetch</code></td><td>Get updates without merge</td></tr>
+        <tr><td><code>git remote -v</code></td><td>Show remote URLs</td></tr>
+      </table>
+    </article>
+
+    <article class="article reveal" id="c9">
+      <h3><i class="fas fa-folder-open"></i> 9. How to Upload an Entire Folder to GitHub</h3>
+      <p>Follow these 7 steps to push any project (folder with subfolders) to GitHub:</p>
+      <div class="workflow">
+        <div class="flow-step"><div class="n">1</div><h5>Create repo</h5><p>On github.com → New repository</p></div>
+        <div class="flow-step"><div class="n">2</div><h5>Open terminal</h5><p>cd into your project folder</p></div>
+        <div class="flow-step"><div class="n">3</div><h5>git init</h5><p>Start tracking</p></div>
+        <div class="flow-step"><div class="n">4</div><h5>git add .</h5><p>Stage everything</p></div>
+        <div class="flow-step"><div class="n">5</div><h5>git commit</h5><p>Save snapshot</p></div>
+        <div class="flow-step"><div class="n">6</div><h5>Add remote</h5><p>Link GitHub repo</p></div>
+        <div class="flow-step"><div class="n">7</div><h5>git push</h5><p>Upload!</p></div>
+      </div>
+<pre><code><span class="cmd-prompt">$</span> cd my-project
+<span class="cmd-prompt">$</span> git init
+<span class="cmd-prompt">$</span> git add .
+<span class="cmd-prompt">$</span> git commit -m <span style="color:#a5d6ff">"Initial commit"</span>
+<span class="cmd-prompt">$</span> git branch -M main
+<span class="cmd-prompt">$</span> git remote add origin https://github.com/username/my-project.git
+<span class="cmd-prompt">$</span> git push -u origin main</code></pre>
+      <div class="callout warn"><strong>Note:</strong> Git uploads <em>all subfolders automatically</em>. Use a <code>.gitignore</code> file to exclude folders like <code>node_modules/</code>.</div>
+      <h4>Example .gitignore</h4>
+<pre><code>node_modules/
+.env
+.DS_Store
+dist/
+*.log</code></pre>
+    </article>
+
+    <article class="article reveal" id="c10">
+      <h3><i class="fas fa-globe"></i> 10. Host Your HTML on GitHub Pages (Free Public URL)</h3>
+      <p>GitHub Pages turns any repository with an <code>index.html</code> into a live website — completely free.</p>
+      <ol>
+        <li>Push your HTML/CSS/JS files to a GitHub repository (make sure <code>index.html</code> is in the root).</li>
+        <li>Go to repo → <strong>Settings</strong> → <strong>Pages</strong> (left sidebar).</li>
+        <li>Under <strong>Source</strong>, choose branch <code>main</code> and folder <code>/ (root)</code>.</li>
+        <li>Click <strong>Save</strong>. Wait ~30 seconds.</li>
+        <li>Your site is live at: <code>https://username.github.io/repo-name/</code></li>
+      </ol>
+      <div class="callout tip"><strong>Pro tip:</strong> You can also add a custom domain (e.g., yourname.com) in the same Pages settings.</div>
+    </article>
+
+    <article class="article reveal" id="c11">
+      <h3><i class="fab fa-markdown"></i> 11. README.md — Your Project's Front Page</h3>
+      <p>A <code>README.md</code> file is the first thing visitors see on your repo. It's written in <strong>Markdown</strong> — a lightweight formatting language.</p>
+      <h4>Sample README.md</h4>
+<pre><code># 🚀 My Awesome Project
+
+A short tagline about what it does.
+
+## ✨ Features
+- Fast & lightweight
+- Mobile responsive
+- Open source
+
+## 📦 Installation
+```bash
+git clone https://github.com/user/repo.git
+cd repo
+npm install
+```
+
+## 🖼 Screenshot
+![preview](preview.png)
+
+## 📄 License
+MIT</code></pre>
+      <h4>Quick Markdown cheat-sheet</h4>
+      <table class="cmd-table">
+        <tr><th>Markdown</th><th>Result</th></tr>
+        <tr><td><code># Heading</code></td><td>Big heading</td></tr>
+        <tr><td><code>**bold**</code></td><td><strong>bold</strong></td></tr>
+        <tr><td><code>*italic*</code></td><td><em>italic</em></td></tr>
+        <tr><td><code>[text](url)</code></td><td>link</td></tr>
+        <tr><td><code>![alt](img.png)</code></td><td>image</td></tr>
+        <tr><td><code>- item</code></td><td>bullet list</td></tr>
+        <tr><td><code>`code`</code></td><td>inline code</td></tr>
+      </table>
+    </article>
+
+    <article class="article reveal" id="c12">
+      <h3><i class="fas fa-code-merge"></i> 12. Branches, Merging & Pull Requests</h3>
+      <p>Branches let you work on features safely without breaking the main code.</p>
+<pre><code><span class="cmd-prompt">$</span> git switch -c feature-login    <span class="cmd-comment"># create + switch</span>
+<span class="cmd-comment"># …make changes, commit…</span>
+<span class="cmd-prompt">$</span> git push -u origin feature-login</code></pre>
+      <p>On GitHub, click <strong>Compare & pull request</strong> → reviewers approve → <strong>Merge pull request</strong> → done!</p>
+      <h4>Resolving merge conflicts</h4>
+      <p>If two people edit the same line, Git shows:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+your changes
+=======
+their changes
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</code></pre>
+      <p>Edit the file to keep the right code, then:</p>
+<pre><code><span class="cmd-prompt">$</span> git add .
+<span class="cmd-prompt">$</span> git commit -m <span style="color:#a5d6ff">"resolve merge conflict"</span></code></pre>
+    </article>
+
+  </div>
+</section>
+
+<!-- TRAINER -->
+<section id="trainer">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="label">Meet Your Instructor</span>
+      <h2>Learn from an Expert</h2>
+    </div>
+    <div class="trainer-card reveal">
+      <div class="trainer-avatar"><i class="fas fa-user-tie"></i></div>
+      <div class="trainer-info">
+        <h3>Coach Rajesh Kumar</h3>
+        <div class="role">Full-Stack Developer & DevOps Trainer</div>
+        <p>8+ years building production apps and teaching version control to thousands of students. Specialized in Git workflows, GitHub Actions, and helping beginners crack their first developer job.</p>
+        <p><i class="fab fa-whatsapp" style="color:#25d366"></i> Reach out anytime on WhatsApp: <strong>+91 97535 28324</strong></p>
+        <div class="trainer-stats">
+          <div class="stat"><div class="num">8+</div><div class="lbl">Years Exp</div></div>
+          <div class="stat"><div class="num">5K+</div><div class="lbl">Students</div></div>
+          <div class="stat"><div class="num">200+</div><div class="lbl">Projects</div></div>
+          <div class="stat"><div class="num">4.9★</div><div class="lbl">Rating</div></div>
+        </div>
+        <div style="margin-top:20px">
+          <a href="https://wa.me/919753528324" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="label">Test Yourself</span>
+      <h2>50+ Question Quiz</h2>
+      <p>Interactive MCQs with instant explanations. Track your score live.</p>
+    </div>
+    <div class="reveal">
+      <div class="quiz-controls">
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="qBar"></div></div>
+        <div class="quiz-score">Score: <span id="qScore">0</span> / <span id="qTotal">0</span></div>
+      </div>
+      <div class="quiz-card" id="quizCard"></div>
+      <div class="quiz-nav">
+        <button class="btn btn-outline" onclick="prevQ()"><i class="fas fa-arrow-left"></i> Previous</button>
+        <button class="btn btn-outline" onclick="restartQuiz()"><i class="fas fa-redo"></i> Restart</button>
+        <button class="btn btn-primary" onclick="nextQ()">Next <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERVIEW -->
+<section id="interview">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="label">Career Prep</span>
+      <h2>50+ Interview Questions</h2>
+      <p>Real questions asked at Google, Amazon, Microsoft, TCS, Infosys & startups. Click any question to reveal the answer.</p>
+    </div>
+    <div class="reveal">
+      <input type="text" class="iq-search" id="iqSearch" placeholder="🔍 Search interview questions..."/>
+      <div class="iq-list" id="iqList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="label">Get In Touch</span>
+      <h2>Send a Query</h2>
+      <p>Have a question? Reach out via the form or WhatsApp — we reply within hours.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3 style="margin-bottom:24px">Contact Info</h3>
+        <div class="info-item">
+          <i class="fab fa-whatsapp"></i>
+          <div><h5>WhatsApp</h5><a href="https://wa.me/919753528324" target="_blank">+91 97535 28324</a></div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-envelope"></i>
+          <div><h5>Email</h5><p>learn@gitmastery.com</p></div>
+        </div>
+        <div class="info-item">
+          <i class="fab fa-github"></i>
+          <div><h5>GitHub</h5><p>github.com/gitmastery</p></div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-clock"></i>
+          <div><h5>Support Hours</h5><p>Mon - Sat, 9 AM - 9 PM IST</p></div>
+        </div>
+        <a href="https://wa.me/919753528324?text=Hi%20I%20want%20to%20learn%20Git%20and%20GitHub" target="_blank" class="whatsapp-btn" style="margin-top:20px;width:100%">
+          <i class="fab fa-whatsapp"></i> Quick Chat Now
+        </a>
+      </div>
+      <form class="query" onsubmit="sendQuery(event)">
+        <div><label>Your Name</label><input type="text" id="qName" required placeholder="John Doe"/></div>
+        <div><label>Email</label><input type="email" id="qEmail" required placeholder="you@email.com"/></div>
+        <div><label>Phone (optional)</label><input type="tel" id="qPhone" placeholder="+91 12345 67890"/></div>
+        <div><label>Your Query</label><textarea id="qMsg" required placeholder="I want to learn..."></textarea></div>
+        <button type="submit" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Send Query via WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<a href="https://wa.me/919753528324" target="_blank" class="float-wa" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+<!-- Footer -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-col">
+      <div class="logo" style="margin-bottom:14px"><i class="fab fa-git-alt"></i><span>Git<span style="color:var(--accent)">Mastery</span></span></div>
+      <p>The complete free Git & GitHub tutorial for absolute beginners to advanced developers.</p>
+      <div class="social">
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://wa.me/919753528324" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Learn</h5>
+      <ul>
+        <li><a href="#chapters">Chapters</a></li>
+        <li><a href="#content">Tutorial</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#interview">Interview Q&A</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="https://git-scm.com" target="_blank">Git Official</a></li>
+        <li><a href="https://github.com" target="_blank">GitHub</a></li>
+        <li><a href="https://docs.github.com" target="_blank">GitHub Docs</a></li>
+        <li><a href="#trainer">Trainer</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="https://wa.me/919753528324">+91 97535 28324</a></li>
+        <li><a href="mailto:learn@gitmastery.com">learn@gitmastery.com</a></li>
+        <li><a href="#contact">Send Query</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    © 2026 GitMastery. Built with ❤️ for developers everywhere. All rights reserved.
+  </div>
+</footer>
+
+<script>
+/* ===== Reveal on scroll ===== */
+const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===== Smooth scroll helper ===== */
+function scrollTo2(sel){document.querySelector(sel)?.scrollIntoView({behavior:'smooth'});}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+
+/* ===== QUIZ DATA (50+) ===== */
+const QUIZ = [
+  {q:"Who created Git?",o:["Linus Torvalds","Linus Pauling","Guido van Rossum","Bjarne Stroustrup"],a:0,e:"Linus Torvalds created Git in 2005 to manage Linux kernel development."},
+  {q:"In what year was Git first released?",o:["2001","2003","2005","2008"],a:2,e:"Git was released on April 7, 2005."},
+  {q:"Git is what kind of version control system?",o:["Centralized","Distributed","Local only","Cloud only"],a:1,e:"Git is a Distributed VCS — every clone is a full repo."},
+  {q:"Which command initializes a new Git repository?",o:["git start","git new","git init","git create"],a:2,e:"git init creates a hidden .git folder."},
+  {q:"How do you stage ALL changed files?",o:["git add *","git add all","git add .","git stage"],a:2,e:"git add . stages every change in the current folder."},
+  {q:"Which command shows the current state of the working directory?",o:["git show","git status","git list","git check"],a:1,e:"git status shows staged, unstaged, and untracked files."},
+  {q:"How do you save a commit with a message?",o:["git commit message 'x'","git commit -m \"x\"","git save 'x'","git push 'x'"],a:1,e:"Use the -m flag followed by a quoted message."},
+  {q:"Which command uploads commits to GitHub?",o:["git upload","git send","git push","git deploy"],a:2,e:"git push sends commits to the remote."},
+  {q:"Which command downloads a remote repo to your computer?",o:["git copy","git fetch","git pull","git clone"],a:3,e:"git clone <url> copies the entire repo."},
+  {q:"GitHub was acquired by which company in 2018?",o:["Google","Microsoft","Amazon","Facebook"],a:1,e:"Microsoft acquired GitHub for $7.5B in 2018."},
+  {q:"Which file lists files Git should ignore?",o:[".gitignore","gitignore.txt",".ignore","exclude.txt"],a:0,e:".gitignore (with leading dot) tells Git what to skip."},
+  {q:"What does HEAD refer to in Git?",o:["First commit","Latest commit on current branch","Remote branch","Stash"],a:1,e:"HEAD is a pointer to the current branch's latest commit."},
+  {q:"Which command creates AND switches to a new branch (modern)?",o:["git branch -c x","git switch -c x","git checkout new x","git create x"],a:1,e:"git switch -c is the modern equivalent of checkout -b."},
+  {q:"What is GitHub Pages used for?",o:["Hosting databases","Hosting static websites","Running servers","Storing videos"],a:1,e:"GitHub Pages serves static HTML/CSS/JS for free."},
+  {q:"Which file is shown on a repo's main page?",o:["index.html","README.md","HOME.txt","DESCRIPTION"],a:1,e:"README.md is the project's front page in Markdown."},
+  {q:"In Markdown, **bold** produces?",o:["italic","bold","underline","strikethrough"],a:1,e:"Double asterisks make text bold."},
+  {q:"git pull is equivalent to?",o:["git fetch + git merge","git push + git add","git clone + git init","git log + git diff"],a:0,e:"git pull = git fetch + git merge."},
+  {q:"Which command shows commit history?",o:["git history","git log","git show","git list"],a:1,e:"git log lists commits chronologically."},
+  {q:"What does the -u flag in 'git push -u origin main' do?",o:["Updates Git","Sets upstream tracking","Uploads files","Undoes changes"],a:1,e:"-u sets upstream so future 'git push' works without args."},
+  {q:"Which command removes a file from staging?",o:["git unstage","git restore --staged file","git remove file","git pop file"],a:1,e:"git restore --staged <file> unstages it."},
+  {q:"Which is NOT a version control system?",o:["SVN","Mercurial","Docker","Perforce"],a:2,e:"Docker is a containerization tool, not VCS."},
+  {q:"What does 'origin' typically refer to?",o:["Local repo","Default remote name","First commit","Master branch"],a:1,e:"'origin' is the conventional name for the primary remote."},
+  {q:"How do you see remote URLs?",o:["git url","git remote -v","git list remote","git show url"],a:1,e:"git remote -v shows fetch/push URLs."},
+  {q:"What does git stash do?",o:["Deletes changes","Temporarily saves changes","Commits silently","Pushes to remote"],a:1,e:"git stash sets aside changes so you can switch context."},
+  {q:"Which command undoes a commit safely (creates a new reverse commit)?",o:["git delete","git revert","git reset","git remove"],a:1,e:"git revert keeps history intact by adding a new commit."},
+  {q:"git reset --hard does what?",o:["Soft undo","Discards all changes & moves HEAD","Creates branch","Renames file"],a:1,e:"--hard wipes working dir and resets HEAD. Dangerous!"},
+  {q:"Pull Requests are a feature of?",o:["Git","GitHub/GitLab/Bitbucket","Windows","Bash"],a:1,e:"PRs are a UI feature of hosting platforms, not Git itself."},
+  {q:"What's the default branch name on new GitHub repos (since 2020)?",o:["master","main","trunk","root"],a:1,e:"GitHub switched default to 'main' in 2020."},
+  {q:"Which command merges branch 'feature' into current branch?",o:["git join feature","git merge feature","git add feature","git pull feature"],a:1,e:"git merge <branch> brings changes into current branch."},
+  {q:"A 'fork' on GitHub means?",o:["Delete repo","Personal copy of someone's repo","Branch","Merge tool"],a:1,e:"Forking creates your own copy under your account."},
+  {q:"git config --global sets config for?",o:["One repo","All repos on system","Just the file","Server"],a:1,e:"--global applies user-wide."},
+  {q:"What is SHA-1 used for in Git?",o:["Encryption","Identifying commits","Compression","Authentication"],a:1,e:"Each commit has a unique SHA-1 hash."},
+  {q:"git diff shows?",o:["Commit list","Differences between versions","Branches","Remotes"],a:1,e:"git diff compares working dir vs index, etc."},
+  {q:"To rename current branch to 'main':",o:["git rename main","git branch -m main","git mv main","git switch main"],a:1,e:"git branch -m main renames current branch."},
+  {q:"Which file extension is used for README?",o:[".txt",".md",".doc",".html"],a:1,e:".md = Markdown."},
+  {q:"git fetch is different from git pull because:",o:["Fetch downloads but doesn't merge","Fetch deletes files","They're identical","Fetch pushes"],a:0,e:"Fetch only downloads; pull = fetch + merge."},
+  {q:"What does git tag do?",o:["Add labels to specific commits","Delete commits","Branch","Push"],a:0,e:"Tags mark releases (e.g., v1.0)."},
+  {q:"A merge conflict happens when?",o:["No internet","Two branches edit the same lines","File too big","Repo is empty"],a:1,e:"Git can't auto-merge overlapping edits."},
+  {q:"What's the .git folder?",o:["Settings","Hidden folder storing all Git data","Backup","Logs only"],a:1,e:".git contains the entire history and metadata."},
+  {q:"Which command lists all branches?",o:["git list","git branch","git show branches","git all"],a:1,e:"git branch lists local branches."},
+  {q:"git push -f stands for?",o:["fast","force","fetch","first"],a:1,e:"-f forces push (overwrites remote — risky!)."},
+  {q:"Which platform competes with GitHub?",o:["GitLab","Slack","Notion","Trello"],a:0,e:"GitLab and Bitbucket are alternatives."},
+  {q:"What's a 'commit'?",o:["Branch","Snapshot of changes","Remote URL","File"],a:1,e:"A commit is a saved snapshot with a message."},
+  {q:"git blame shows?",o:["Errors","Who changed each line","Branches","Logs"],a:1,e:"git blame annotates lines with author info."},
+  {q:"Which command displays a single commit's details?",o:["git show <hash>","git view <hash>","git read <hash>","git open <hash>"],a:0,e:"git show <hash> displays a commit's diff."},
+  {q:"GitHub Actions is used for?",o:["CI/CD automation","Hosting","Chatting","Editing"],a:0,e:"Actions runs workflows for testing/deploying."},
+  {q:"What's a 'Pull Request'?",o:["Request to pull code into a branch","Download request","Server pull","File download"],a:0,e:"PR proposes merging your branch into another."},
+  {q:"To see who you're authenticated as on GitHub locally:",o:["git whoami","git config user.name","git user","git auth"],a:1,e:"git config user.name shows your configured name."},
+  {q:"What does 'staging area' (index) mean?",o:["Files to commit next","Deleted files","Remote files","Hidden files"],a:0,e:"Staging area holds changes waiting to be committed."},
+  {q:"git rebase is used to?",o:["Reorganize commits onto another base","Delete branch","Push code","Clone repo"],a:0,e:"Rebase rewrites commits onto a new base — cleaner history."},
+  {q:"Which is true about GitHub Pages URL?",o:["username.github.io/repo/","github.com/user","git.com/page","pages.git"],a:0,e:"Default Pages URL: https://username.github.io/repo-name/"},
+  {q:"How do you check Git version?",o:["git -v","git --version","git ver","git V"],a:1,e:"git --version prints installed version."},
+  {q:"A 'detached HEAD' state means?",o:["HEAD points to a commit not on a branch","Broken repo","Server offline","No commits"],a:0,e:"You're viewing a commit directly, not a branch tip."},
+  {q:"What does 'git cherry-pick <hash>' do?",o:["Deletes commit","Applies a specific commit onto current branch","Lists commits","Tags commit"],a:1,e:"Cherry-pick copies one commit to current branch."}
+];
+
+let qIdx=0, qScore=0, qAnswered=[];
+const card = document.getElementById('quizCard');
+const bar = document.getElementById('qBar');
+document.getElementById('qTotal').textContent = QUIZ.length;
+
+function renderQ(){
+  const q = QUIZ[qIdx];
+  const already = qAnswered[qIdx];
+  card.innerHTML = `
+    <div class="q-num">Question ${qIdx+1} of ${QUIZ.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-options">
+      ${q.o.map((op,i)=>`<button class="q-opt" data-i="${i}" onclick="answer(${i})" ${already!==undefined?'disabled':''}>${String.fromCharCode(65+i)}. ${op}</button>`).join('')}
+    </div>
+    <div class="q-explain" id="qExp"><strong>💡 ${q.o[q.a]}</strong> — ${q.e}</div>
+  `;
+  if(already!==undefined){
+    const opts = card.querySelectorAll('.q-opt');
+    opts[q.a].classList.add('correct');
+    if(already!==q.a) opts[already].classList.add('wrong');
+    document.getElementById('qExp').classList.add('show');
+  }
+  bar.style.width = ((qIdx+1)/QUIZ.length*100)+'%';
+  document.getElementById('qScore').textContent = qScore;
+}
+function answer(i){
+  if(qAnswered[qIdx]!==undefined) return;
+  qAnswered[qIdx]=i;
+  const q = QUIZ[qIdx];
+  const opts = card.querySelectorAll('.q-opt');
+  opts.forEach(o=>o.disabled=true);
+  opts[q.a].classList.add('correct');
+  if(i===q.a){ qScore++; }
+  else opts[i].classList.add('wrong');
+  document.getElementById('qExp').classList.add('show');
+  document.getElementById('qScore').textContent = qScore;
+}
+function nextQ(){ if(qIdx<QUIZ.length-1){qIdx++;renderQ();}else{alert(`🎉 Quiz complete!\nFinal Score: ${qScore} / ${QUIZ.length}`);} }
+function prevQ(){ if(qIdx>0){qIdx--;renderQ();} }
+function restartQuiz(){ qIdx=0;qScore=0;qAnswered=[];renderQ(); }
+renderQ();
+
+/* ===== INTERVIEW Q&A (50+) ===== */
+const IQ = [
+  ["What is Git?","Git is a free, open-source distributed version control system (DVCS) created by Linus Torvalds in 2005. It tracks file changes, supports branching/merging, and allows multiple developers to collaborate efficiently with full project history available locally."],
+  ["What is the difference between Git and GitHub?","Git is the version control tool installed on your computer. GitHub is a cloud-based hosting service for Git repositories. Git manages versions; GitHub stores and shares those versions online with collaboration features (PRs, Issues, Actions)."],
+  ["What is a repository in Git?","A repository (repo) is a directory tracked by Git that stores your project files along with the full history of changes in a hidden .git folder."],
+  ["What is the difference between git pull and git fetch?","git fetch downloads new commits from the remote but does not merge them. git pull does both: git fetch + git merge (or rebase). Fetch is safer for inspection first."],
+  ["What is a commit?","A commit is a snapshot of staged changes at a specific point in time with a unique SHA-1 hash, author, timestamp, and message."],
+  ["What is the staging area?","Also called the 'index', it's an intermediate area where Git collects changes (via git add) before they're committed. It lets you craft precise commits."],
+  ["What is HEAD in Git?","HEAD is a pointer to the current branch's latest commit. It tells Git where you are 'right now' in the history."],
+  ["What is a branch?","A branch is a lightweight, movable pointer to a commit. It lets you work on features in isolation without affecting the main code."],
+  ["What is the default branch in Git?","Historically 'master'. Since 2020, GitHub and most platforms use 'main' as the default branch name."],
+  ["How do you create a new branch?","git branch <name> creates it; git switch -c <name> (modern) or git checkout -b <name> (older) creates and switches in one step."],
+  ["What is a merge conflict and how do you resolve it?","A merge conflict happens when two branches edit the same lines differently. Git marks conflicts in files with <<<<<<<, =======, >>>>>>>. You manually edit the file, choose what to keep, then git add and git commit."],
+  ["What's the difference between git merge and git rebase?","Merge combines branches by creating a new merge commit (preserves history). Rebase moves your commits on top of another branch (linear, cleaner history but rewrites commits)."],
+  ["What is git stash?","git stash temporarily shelves uncommitted changes so you can switch branches. Restore with git stash pop or git stash apply."],
+  ["What's the difference between git reset and git revert?","git revert creates a new commit that undoes a previous one — safe for shared branches. git reset moves HEAD backwards and can rewrite history — use with caution."],
+  ["What are the three areas of Git?","Working directory (your files), Staging area (index, files added but not committed), Repository (.git folder, committed snapshots)."],
+  ["What is a .gitignore file?","A text file listing patterns of files/folders Git should ignore (e.g., node_modules/, .env). Keeps secrets and build artifacts out of the repo."],
+  ["What is the difference between git clone and git fork?","Clone creates a local copy of a repo on your computer. Fork creates a server-side copy under your own GitHub account, typically for contributing to open source."],
+  ["What is a Pull Request (PR)?","A PR is a GitHub/GitLab feature that proposes merging a branch into another, allowing code review, discussion, and CI checks before merging."],
+  ["What is git cherry-pick?","Applies a specific commit (by hash) from one branch onto another — useful for hotfixes or porting changes selectively."],
+  ["What does 'origin' mean?","A conventional alias for the primary remote repository (usually the one you cloned from)."],
+  ["What is detached HEAD?","HEAD points directly to a specific commit, not a branch. New commits won't belong to any branch unless you create one."],
+  ["How do you undo the last commit (keep changes)?","git reset --soft HEAD~1 — moves HEAD back one commit but keeps staged changes intact."],
+  ["How do you undo the last commit and discard all changes?","git reset --hard HEAD~1 — permanently removes the commit and all changes. Dangerous!"],
+  ["How do you change the most recent commit message?","git commit --amend -m \"new message\""],
+  ["What is git blame used for?","Shows who last modified each line of a file and in which commit — great for debugging or auditing changes."],
+  ["What is a Git tag?","A reference pointing to a specific commit, often used to mark releases (e.g., v1.0.0). Tags can be lightweight or annotated."],
+  ["What's the difference between annotated and lightweight tags?","Annotated tags (git tag -a v1.0 -m 'msg') are full objects with author and message. Lightweight tags are just pointers — like a bookmark."],
+  ["What is fast-forward merge?","When the target branch is a direct ancestor of the source branch, Git simply moves the pointer forward without creating a merge commit."],
+  ["What does git push --force do?","Overwrites the remote branch with your local one, even if commits differ. Dangerous on shared branches — use --force-with-lease for safer force-push."],
+  ["What are GitHub Actions?","GitHub's built-in CI/CD platform that runs automated workflows (testing, building, deploying) defined in YAML files inside .github/workflows/."],
+  ["What's the difference between centralized and distributed VCS?","Centralized (SVN) has a single server holding all history; clients fetch what they need. Distributed (Git) gives every client a full copy of the repo with all history."],
+  ["How do you delete a local branch?","git branch -d <name> (safe — refuses if unmerged) or git branch -D <name> (force)."],
+  ["How do you delete a remote branch?","git push origin --delete <branch-name>"],
+  ["What is git reflog?","A log of every change HEAD has made — useful for recovering 'lost' commits after a reset or rebase."],
+  ["What is squash merge?","Combines all commits from a feature branch into a single commit on merge, keeping history clean. Common on GitHub PRs."],
+  ["How do you set up SSH with GitHub?","Generate key (ssh-keygen -t ed25519), add public key to GitHub Settings → SSH Keys, then use git@github.com:user/repo.git URLs."],
+  ["What is a remote in Git?","A reference to a copy of your repo hosted elsewhere (typically a server). View with git remote -v."],
+  ["How do you rename a Git branch?","git branch -m old new (or just git branch -m new if you're on the branch)."],
+  ["What is git bisect?","A binary-search tool to find which commit introduced a bug. You mark good/bad commits and Git checks out midpoints until isolating the culprit."],
+  ["What does 'upstream' mean?","The default remote branch your local branch tracks. Set with git push -u origin <branch>."],
+  ["What is the difference between git checkout and git switch?","Both switch branches, but git switch (newer, Git 2.23+) only handles branches, making intent clearer. git checkout also restores files — overloaded."],
+  ["Explain the Git workflow (basic).","1) Modify files in working dir → 2) git add stages changes → 3) git commit saves snapshot → 4) git push uploads to remote."],
+  ["What is GitHub Pages?","Free static-site hosting from GitHub. Push an index.html, enable Pages in Settings, get a public URL like username.github.io/repo."],
+  ["What is a fork vs clone vs branch?","Fork = server-side copy under your account. Clone = local copy of any repo. Branch = parallel line of development inside a repo."],
+  ["What does git log --oneline --graph do?","Displays compact commit history with an ASCII graph of branches and merges."],
+  ["How do you keep a fork synced with the original repo?","Add the original as 'upstream' remote, then: git fetch upstream && git merge upstream/main (or rebase)."],
+  ["What is a hook in Git?","A custom script that runs at specific events (e.g., pre-commit, post-merge) stored in .git/hooks/. Used for linting, testing, etc."],
+  ["What is a submodule?","A Git repo nested inside another repo, tracked at a specific commit. Lets you include external projects as dependencies."],
+  ["What's the difference between git add . and git add -A?","Both stage all changes, but git add -A stages additions, modifications, AND deletions across the entire repo. git add . in modern Git is essentially equivalent."],
+  ["How do you view changes between two commits?","git diff <hash1> <hash2>  — or  git diff HEAD~3 HEAD"],
+  ["What's the most important Git best practice?","Commit often with clear messages, pull before you push, never force-push to shared branches, and use branches for every feature/fix."],
+  ["What is README.md and why is it important?","A Markdown file that describes your project on the repo's main page. It's the first impression — explain what it does, how to install, how to use, and license info."],
+  ["How can you ensure sensitive data never reaches GitHub?","Add secret files (e.g., .env, keys.json) to .gitignore BEFORE first commit. If leaked, rotate the secret immediately and use git-filter-repo to remove from history."]
+];
+
+const iqList = document.getElementById('iqList');
+function renderIQ(filter=''){
+  iqList.innerHTML = IQ.map(([q,a],i)=>{
+    if(filter && !(q.toLowerCase().includes(filter)||a.toLowerCase().includes(filter))) return '';
+    return `<div class="iq-item"><div class="iq-q" onclick="this.parentElement.classList.toggle('open')">
+      <div><span class="qn">Q${i+1}.</span>${q}</div><i class="fas fa-chevron-down"></i></div>
+      <div class="iq-a"><p>${a}</p></div></div>`;
+  }).join('');
+}
+renderIQ();
+document.getElementById('iqSearch').addEventListener('input',e=>renderIQ(e.target.value.toLowerCase()));
+
+/* ===== Send Query via WhatsApp ===== */
+function sendQuery(e){
+  e.preventDefault();
+  const name = document.getElementById('qName').value;
+  const email = document.getElementById('qEmail').value;
+  const phone = document.getElementById('qPhone').value;
+  const msg = document.getElementById('qMsg').value;
+  const text = `Hello! I have a query about Git/GitHub course.%0A%0A*Name:* ${name}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A%0A*Query:*%0A${msg}`;
+  window.open(`https://wa.me/919753528324?text=${text}`,'_blank');
+}
+</script>
+</body>
+</html>
